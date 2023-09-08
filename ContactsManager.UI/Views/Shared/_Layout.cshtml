@@ -1,0 +1,103 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width" />
+  <title>@ViewBag.Title</title>
+  <link href="~/StyleSheet.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+  <div class="container">
+    <div class="page-content">
+
+      <div class="flex" id="top-bar-div">
+        <div class="flex-1">
+          <h1 class="app-title">
+            <i class="fa-solid fa-people-simple"></i>
+            CRUD Demo
+          </h1>
+        </div>
+
+        <div class="flex-1 pr" id="search-box-div">
+          <div class="navbar account-links">
+            <ul>
+              @if (User.Identity!.IsAuthenticated)
+              {
+                <li>
+                  <i class="fa-solid fa-user"></i>
+                  @User.Identity?.Name
+                </li>
+                @if (User.IsInRole("Admin"))
+                {
+                  <li>
+                    <a asp-area="Admin" asp-controller="Home" asp-action="Index">Admin Home</a>
+                  </li>
+                }
+                <li>
+                  <a asp-controller="Account" asp-action="Logout">Logout</a>
+                </li>
+              }
+              else
+              {
+                @if (ViewBag.CurrentUrl == "~/Account/Register")
+                {
+                  <li>
+                    <a asp-controller="Account" asp-action="Register" class="nav-active">Register</a>
+                  </li>
+                }
+                else
+                {
+                  <li>
+                    <a asp-controller="Account" asp-action="Register">Register</a>
+                  </li>
+                }
+                @if (ViewBag.CurrentUrl == "~/Account/Login")
+                {
+                  <li>
+                    <a asp-controller="Account" asp-action="Login" class="nav-active">Login</a>
+                  </li>
+                }
+                else
+                {
+                  <li>
+                    <a asp-controller="Account" asp-action="Login">Login</a>
+                  </li>
+                }
+              }
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="navbar">
+        <ul>
+          @if (User.Identity!.IsAuthenticated)
+          {
+            @if (ViewBag.CurrentUrl == "~/Persons/Index")
+            {
+              <li>
+                <a asp-controller="Persons" asp-action="Index" class="nav-active">Persons</a>
+              </li>
+            }
+            else
+            {
+              <li>
+                <a asp-controller="Persons" asp-action="Index">Persons</a>
+              </li>
+            }
+          }
+        </ul>
+      </div>
+
+      <div class="body">
+        @RenderBody()
+      </div>
+
+    </div>
+  </div>
+
+  @RenderSection("scripts", required: false)
+</body>
+</html>
